@@ -4,7 +4,7 @@ export default class Senha {
 
     static opcoesTem(id: string, opcoes: OpcaoCaractere[]) {
         const opcao = opcoes.find(opcao => opcao.id === id);
-        return opcao ? opcao.valor : false;
+        return opcao!.valor;
     }
 
   static gerarSenha(tamanho: number, opcoes: OpcaoCaractere[]) {
@@ -28,5 +28,21 @@ export default class Senha {
       senha += caracteresPossiveis.charAt(indice);
     }
     return senha;
+  }
+  static calcularForca(tamanho:number, opcoes:OpcaoCaractere[]){
+    const temNumeros = +Senha.opcoesTem(IdsCaracteres.NUMEROS, opcoes);
+    const temMaiusculas = +Senha.opcoesTem(IdsCaracteres.MAIUSCULAS, opcoes);
+    const temMinusculas = +Senha.opcoesTem(IdsCaracteres.MINUSCULAS, opcoes);
+    const temEspeciais = +Senha.opcoesTem(IdsCaracteres.ESPECIAIS, opcoes);
+    const qtdeTipos = temNumeros + temMaiusculas + temMinusculas + temEspeciais;
+
+    if(tamanho < 8 || qtdeTipos < 2){
+      return 1;
+    }
+    if(qtdeTipos === 4 || tamanho >= 10 ){
+      return 3;
+    }
+    return 2;
+
   }
 }
